@@ -104,7 +104,7 @@ module.exports = generator.extend({
                 name: this.projectName,
                 version: "1.0.0",
                 description: this.desc,
-                main: "app.js",
+                main: "app.ts",
                 scripts: {
                     "devBuild": "webpack --config ./webpackConfigs/webpack.config.dev.js",
                     "prodBuild": "webpack --config ./webpackConfigs/webpack.config.prod.js"
@@ -116,29 +116,29 @@ module.exports = generator.extend({
             };
 
             //dependencies
-            if(this.includeAxios) {packageFile.dependencies["axios"] = "latest";}
+            if(this.includeAxios) {packageFile.dependencies["axios"] = "^0.17.0";}
             if(this.includeJquery) {packageFile.dependencies["jquery"] = "2.2.4";}
-            if(this.includeLodash) {packageFile.dependencies["lodash"] = "latest";}
-            if(this.includeMoment) {packageFile.dependencies["moment"] = "latest";}
-            if(this.includesputil) {packageFile.dependencies["pd-sputil"] = "latest";}
-            if(this.includespserverajax) {packageFile.dependencies["pd-spserverajax"] = "latest";}
-            if(this.includespserverjsom) {packageFile.dependencies["pd-spserverjsom"] = "latest";}
-            if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "latest";}
-            packageFile.dependencies["babel-polyfill"] = "latest";
+            if(this.includeLodash) {packageFile.dependencies["lodash"] = "^4.0.0";}
+            if(this.includeMoment) {packageFile.dependencies["moment"] = "^2.0.0";}
+            if(this.includesputil) {packageFile.dependencies["pd-sputil"] = "^2.0.0";}
+            if(this.includespserverajax) {packageFile.dependencies["pd-spserverajax"] = "^2.0.0";}
+            if(this.includespserverjsom) {packageFile.dependencies["pd-spserverjsom"] = "^1.0.0";}
+            if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "^1.0.0";}
+            //packageFile.dependencies["babel-polyfill"] = "latest";
             
             //devDependencies
-            packageFile.devDependencies["webpack"] = "latest";
-            packageFile.devDependencies["clean-webpack-plugin"] = "latest";
-            packageFile.devDependencies["html-webpack-plugin"] = "latest";
-            packageFile.devDependencies["css-loader"] = "latest";
-            packageFile.devDependencies["sass-loader"] = "latest";
-            packageFile.devDependencies["file-loader"] = "latest";
-            packageFile.devDependencies["style-loader"] = "latest";
-            packageFile.devDependencies["ts-loader"] = "latest";
-            packageFile.devDependencies["extract-text-webpack-plugin"] = "latest";
-            packageFile.devDependencies["typescript"] = "latest";
+            packageFile.devDependencies["webpack"] = "^3.0.0";
+            packageFile.devDependencies["clean-webpack-plugin"] = "^0.1.17";
+            packageFile.devDependencies["html-webpack-plugin"] = "^2.30.1";
+            packageFile.devDependencies["css-loader"] = "0.28.7";
+            packageFile.devDependencies["sass-loader"] = "^6.0.6";
+            packageFile.devDependencies["file-loader"] = "^1.1.5";
+            packageFile.devDependencies["style-loader"] = "0.19.0";
+            packageFile.devDependencies["ts-loader"] = "^3.0.0";
+            packageFile.devDependencies["extract-text-webpack-plugin"] = "^3.0.0";
+            packageFile.devDependencies["typescript"] = "^2.0.0";
             //packageFile.devDependencies["tslint"] = "latest";
-            packageFile.devDependencies["npm-run-all"] = "latest";
+            packageFile.devDependencies["npm-run-all"] = "^4.1.1";
 
             this.fs.writeJSON(
                 this.destinationPath('package.json'),
@@ -152,24 +152,28 @@ module.exports = generator.extend({
                 this.destinationPath('.gitignore')
             );
             this.fs.copy(
-                this.templatePath('.eslintrc.json'),
-                this.destinationPath('.eslintrc.json')
+                this.templatePath('tslint.json'),
+                this.destinationPath('tslint.json')
             );
             this.fs.copy(
                 this.templatePath('webpackConfigs/**'),
                 this.destinationPath('webpackConfigs/')
             );
+            this.fs.copy(
+                this.templatePath('tsconfig.json'),
+                this.destinationPath('tsconfig.json')
+            );
         },
         styleSheets: function() {
             this.fs.copy(
-                this.templatePath('app/_main.css'),
-                this.destinationPath('src/styleSheets/main.css')
+                this.templatePath('app/_main.scss'),
+                this.destinationPath('src/styleSheets/main.scss')
             );
         },
         scripts: function(){
             this.fs.copyTpl(
-                this.templatePath('app/_app.js'),
-                this.destinationPath('src/scripts/app.js'),
+                this.templatePath('app/_app.ts'),
+                this.destinationPath('src/scripts/app.ts'),
                 {
                     projectName: this.projectName
                 }
