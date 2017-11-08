@@ -9,7 +9,7 @@ module.exports = function(env) {
 
     return {
         entry: {
-            main: './src/scripts/app.js'
+            main: './src/scripts/app.ts'
         },
         output: {
             path: path.resolve(__dirname, "../dist"),
