@@ -2,8 +2,12 @@
     "compilerOptions": {
         "target": "es5",
         "lib": [
+            "dom",
             "es2015",
-            "dom"
+            "es2015.promise",
+            "es2015.iterable",
+            "es2015.generator",
+            "es2016.array.include"
         ],
         "allowJs": true,
         "sourceMap": true,

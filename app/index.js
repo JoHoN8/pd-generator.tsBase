@@ -124,7 +124,7 @@ module.exports = generator.extend({
             if(this.includespserverajax) {packageFile.dependencies["pd-spserverajax"] = "^2.0.0";}
             if(this.includespserverjsom) {packageFile.dependencies["pd-spserverjsom"] = "^1.0.0";}
             if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "^1.0.0";}
-            //packageFile.dependencies["babel-polyfill"] = "latest";
+            packageFile.dependencies["core-js"] = "^2.0.0";
             
             //devDependencies
             packageFile.devDependencies["webpack"] = "^3.0.0";
