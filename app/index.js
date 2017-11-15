@@ -117,14 +117,17 @@ module.exports = generator.extend({
 
             //dependencies
             if(this.includeAxios) {packageFile.dependencies["axios"] = "^0.17.0";}
-            if(this.includeJquery) {packageFile.dependencies["jquery"] = "2.2.4";}
+            if(this.includeJquery) {packageFile.dependencies["jquery"] = "^3.0.0";}
+            if(this.includeJquery) {packageFile.devDependencies["@types/jquery"] = "^3.0.0";}
             if(this.includeLodash) {packageFile.dependencies["lodash"] = "^4.0.0";}
+            if(this.includeLodash) {packageFile.devDependencies["@types/lodash"] = "^4.0.0";}
             if(this.includeMoment) {packageFile.dependencies["moment"] = "^2.0.0";}
             if(this.includesputil) {packageFile.dependencies["pd-sputil"] = "^2.0.0";}
             if(this.includespserverajax) {packageFile.dependencies["pd-spserverajax"] = "^2.0.0";}
             if(this.includespserverjsom) {packageFile.dependencies["pd-spserverjsom"] = "^1.0.0";}
             if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "^1.0.0";}
             packageFile.dependencies["core-js"] = "^2.0.0";
+            packageFile.devDependencies["@types/core-js"]= "^0.9.43"
             
             //devDependencies
             packageFile.devDependencies["webpack"] = "^3.0.0";
