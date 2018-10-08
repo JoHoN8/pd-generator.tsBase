@@ -1,12 +1,12 @@
 module.exports = function(env) {
     const path = require('path'),
-        webpack = require('webpack'),
         cleanWebpackPlugin = require('clean-webpack-plugin'),
         HtmlWebpackPlugin = require('html-webpack-plugin'),
         settings = require('./statics/configSettings.js'),
-        ExtractTextPlugin = require('extract-text-webpack-plugin'),
-        extractCSS = new ExtractTextPlugin(settings.styleSheetNames.prod.css),
-        extractSCSS  = new ExtractTextPlugin(settings.styleSheetNames.prod.scss);
+        ExtractTextPlugin = require('mini-css-extract-plugin'),
+        UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
+        OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin"),
+        extractCSS = new ExtractTextPlugin({filename: settings.styleSheetNames.dev.css});
     
     return {
         entry: {
@@ -19,27 +19,12 @@ module.exports = function(env) {
         module:{
             rules:[
                 {
-                    test: /\.css$/,
-                    use: extractCSS.extract({
-                        use: [
-                            {
-                                loader: 'css-loader',
-                                options: settings.cssloaderOptionsProd
-                            }
-                        ]
-                    })
-                },
-                {
-                    test: /\.scss$/,
-                    use: extractSCSS.extract({
-                        use: [
-                            {
-                                loader: 'css-loader',
-                                options: settings.cssloaderOptionsProd
-                            },
-                            'sass-loader'
-                        ]
-                    })
+                    test: /\.s?[ac]ss$/,
+                    use: [
+                        ExtractTextPlugin.loader,
+                        { loader: 'css-loader', options: { url: false, sourceMap: true } },
+                        { loader: 'sass-loader', options: { sourceMap: true } }
+                    ],
                 },
                 {
                     test: /\.(ts|js)?$/,
@@ -52,17 +37,21 @@ module.exports = function(env) {
             ]
         },
         resolve: {
-            extensions: ['.ts', '.tsx', '.js', '.scss']
+            extensions: ['.ts', '.tsx', '.js', '.scss', '.css']
+        },
+        optimization: {
+            minimizer: [
+                new UglifyJsPlugin(settings.UglifyJsOptions),
+                new OptimizeCSSAssetsPlugin({})
+            ]
         },
         plugins: [
             new cleanWebpackPlugin(['dist'], settings.cleanOptions),
             new HtmlWebpackPlugin(settings.htmlPluginOptions),
-            new webpack.optimize.UglifyJsPlugin(settings.UglifyJsOptions),
             new webpack.HashedModuleIdsPlugin(),
-            new webpack.DefinePlugin(settings.defineOptions),
-            extractCSS,
-            extractSCSS
+            extractCSS
         ],
+        mode: "production",
         devtool: 'source-map',
         externals: {}
     };
