@@ -3,9 +3,8 @@ module.exports = function(env) {
         cleanWebpackPlugin = require('clean-webpack-plugin'),
         HtmlWebpackPlugin = require('html-webpack-plugin'),
         settings = require('./statics/configSettings.js'),
-        ExtractTextPlugin = require('extract-text-webpack-plugin'),
-        extractCSS = new ExtractTextPlugin(settings.styleSheetNames.dev.css),
-        extractSCSS  = new ExtractTextPlugin(settings.styleSheetNames.dev.scss);
+        ExtractTextPlugin = require('mini-css-extract-plugin'),
+        extractCSS = new ExtractTextPlugin({filename: settings.styleSheetNames.dev.css});
 
     return {
         entry: {
@@ -18,25 +17,12 @@ module.exports = function(env) {
         module:{
             rules:[
                 {
-                    test: /\.css$/,
-                    use: extractCSS.extract({
-                        use: [
-                            {
-                                loader: 'css-loader',
-                            }
-                        ]
-                    })
-                },
-                {
-                    test: /\.scss$/,
-                    use: extractSCSS.extract({
-                        use: [
-                            {
-                                loader: 'css-loader',
-                            },
-                            'sass-loader'
-                        ]
-                    })
+                    test: /\.s?[ac]ss$/,
+                    use: [
+                        ExtractTextPlugin.loader,
+                        { loader: 'css-loader', options: { url: false, sourceMap: true } },
+                        { loader: 'sass-loader', options: { sourceMap: true } }
+                    ],
                 },
                 {
                     test: /\.(ts|js)?$/,
@@ -49,14 +35,14 @@ module.exports = function(env) {
             ]
         },
         resolve: {
-            extensions: ['.ts', '.tsx', '.js', '.scss']
+            extensions: ['.ts', '.tsx', '.js', '.scss', '.css']
         },
         plugins: [
             new cleanWebpackPlugin(['dist'], settings.cleanOptions),
             new HtmlWebpackPlugin(settings.htmlPluginOptions),
-            extractCSS,
-            extractSCSS
+            extractCSS
         ],
+        mode: "development",
         devtool: 'inline-source-map',
         externals: {}
     };

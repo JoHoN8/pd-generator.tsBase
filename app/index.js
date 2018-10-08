@@ -106,7 +106,10 @@ module.exports = class extends Generator{
             main: "app.ts",
             scripts: {
                 "devBuild": "webpack --config ./webpackConfigs/webpack.config.dev.js",
-                "prodBuild": "webpack --config ./webpackConfigs/webpack.config.prod.js"
+                "prodBuild": "webpack --config ./webpackConfigs/webpack.config.prod.js",
+                "publish": "node ./processFile.js",
+                "devPublish": "run-s devBuild publish",
+                "prodPublish": "run-s prodBuild publish"
             },
             author: this.author,
             license: "ISC",
@@ -129,18 +132,22 @@ module.exports = class extends Generator{
         packageFile.devDependencies["@types/core-js"]= "^0.9.43"
         
         //devDependencies
-        packageFile.devDependencies["webpack"] = "^3.0.0";
+        packageFile.devDependencies["webpack"] = "^4.0.0";
+        packageFile.devDependencies["webpack-cli"] = "^3.0.0";
         packageFile.devDependencies["clean-webpack-plugin"] = "^0.1.17";
-        packageFile.devDependencies["html-webpack-plugin"] = "^2.30.1";
+        packageFile.devDependencies["html-webpack-plugin"] = "^3.0.0";
+        packageFile.devDependencies["uglifyjs-webpack-plugin"] = "^2.0.1";
+        packageFile.devDependencies["optimize-css-assets-webpack-plugin"] = "^5.0.1";
         packageFile.devDependencies["css-loader"] = "0.28.7";
-        packageFile.devDependencies["sass-loader"] = "^6.0.6";
+        packageFile.devDependencies["sass-loader"] = "^7.0.0";
         packageFile.devDependencies["file-loader"] = "^1.1.5";
         packageFile.devDependencies["style-loader"] = "0.19.0";
-        packageFile.devDependencies["ts-loader"] = "^3.0.0";
-        packageFile.devDependencies["extract-text-webpack-plugin"] = "^3.0.0";
-        packageFile.devDependencies["typescript"] = "^2.0.0";
+        packageFile.devDependencies["ts-loader"] = "^5.0.0";
+        packageFile.devDependencies["mini-css-extract-plugin"] = "^0.4.0";
+        packageFile.devDependencies["typescript"] = "^3.0.0";
         //packageFile.devDependencies["tslint"] = "latest";
         packageFile.devDependencies["npm-run-all"] = "^4.1.1";
+        packageFile.devDependencies["node-sass"] = "^4.0.0";
     
         this.fs.writeJSON(
             this.destinationPath('package.json'),
